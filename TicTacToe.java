@@ -11,10 +11,6 @@ public class TicTacToe extends JFrame implements ActionListener {
     private boolean isXTurn = true;
 
     public TicTacToe() {
-        initComponents();
-    }
-
-    private void initComponents() {
         setTitle("Tic Tac Toe");
         setSize(480, 640);
         setLayout(new BorderLayout());
@@ -27,7 +23,7 @@ public class TicTacToe extends JFrame implements ActionListener {
         turnLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(turnLabel, BorderLayout.NORTH);
 
-        //grid Panel for Tic Tac Toe board
+        //grid panel for Tic Tac Toe board
         JPanel gridPanel = new JPanel(new GridLayout(3, 3));
         add(gridPanel, BorderLayout.CENTER);
 
@@ -60,7 +56,6 @@ public class TicTacToe extends JFrame implements ActionListener {
         } else if (isBoardFull()) {
             showWinnerPopup("It's a Draw!");
         } else {
-            //updating Turn Indicator
             isXTurn = !isXTurn;
             turnLabel.setText((isXTurn ? "X" : "O") + "'s Turn");
         }
@@ -110,7 +105,7 @@ public class TicTacToe extends JFrame implements ActionListener {
     }
 
     private void highlightWinningCells(int[] winPositions) {
-        // Light green color  for the winner
+        // Light green color highlighting  for the winner
         Color highlightColor = new Color(144, 238, 144);
         for (int i = 0; i < winPositions.length; i += 2) {
             buttons[winPositions[i]][winPositions[i + 1]].setBackground(highlightColor);
