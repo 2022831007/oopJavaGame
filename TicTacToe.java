@@ -52,9 +52,9 @@ public class TicTacToe extends JFrame implements ActionListener {
         int[] winPositions = checkWinner();
         if (winPositions != null) {
             highlightWinningCells(winPositions);
-            showWinnerPopup((isXTurn ? "X" : "O") + " Wins!");
+            showWinnerPopup((isXTurn ? "X" : "O") + " Wins!",true);
         } else if (isBoardFull()) {
-            showWinnerPopup("It's a Draw!");
+            showWinnerPopup("It's a Draw!",false);
         } else {
             isXTurn = !isXTurn;
             turnLabel.setText((isXTurn ? "X" : "O") + "'s Turn");
@@ -124,7 +124,7 @@ public class TicTacToe extends JFrame implements ActionListener {
         turnLabel.setText("X's Turn");
     }
 
-    private void showWinnerPopup(String message) {
+    private void showWinnerPopup(String message,boolean isWin) {
         JFrame popup = new JFrame("Game Over");
         popup.setSize(350, 400);
         popup.setLayout(new BorderLayout());
@@ -134,15 +134,30 @@ public class TicTacToe extends JFrame implements ActionListener {
         label.setFont(new Font("Arial", Font.BOLD, 18));
         popup.add(label, BorderLayout.NORTH);
 
-        //  load GIF
-        java.net.URL gifUrl = getClass().getResource("/gamebe/cute.gif");
-        if (gifUrl != null) {
-            ImageIcon gifIcon = new ImageIcon(gifUrl);
-            JLabel gifLabel = new JLabel(gifIcon);
-            popup.add(gifLabel, BorderLayout.CENTER);
-        } else {
-            JLabel errorLabel = new JLabel("GIF not found!", SwingConstants.CENTER);
-            popup.add(errorLabel, BorderLayout.CENTER);
+        // load exited gif for winner
+        if (isWin) {
+            java.net.URL gifUrl = getClass().getResource("/gamebe/cute.gif");
+            if (gifUrl != null) {
+                ImageIcon gifIcon = new ImageIcon(gifUrl);
+                JLabel gifLabel = new JLabel(gifIcon);
+                popup.add(gifLabel, BorderLayout.CENTER);
+            } else {
+                JLabel errorLabel = new JLabel("Winner GIF not found!", SwingConstants.CENTER);
+                popup.add(errorLabel, BorderLayout.CENTER);
+            }
+
+        } //load sadcat gif for draw
+        else {
+            
+            java.net.URL gifUrl = getClass().getResource("/gamebe/catSad.gif");
+            if (gifUrl != null) {
+                ImageIcon gifIcon = new ImageIcon(gifUrl);
+                JLabel gifLabel = new JLabel(gifIcon);
+                popup.add(gifLabel, BorderLayout.CENTER);
+            } else {
+                JLabel errorLabel = new JLabel("Draw GIF not found!", SwingConstants.CENTER);
+                popup.add(errorLabel, BorderLayout.CENTER);
+            }
         }
 
         // Buttons
@@ -150,6 +165,7 @@ public class TicTacToe extends JFrame implements ActionListener {
         panel.setLayout(new GridLayout(1, 2, 10, 10));
 
         JButton playAgainButton = new JButton("Play Again");
+        playAgainButton.setFocusPainted(false);
         playAgainButton.addActionListener(e -> {
             popup.dispose();
             resetGame();
